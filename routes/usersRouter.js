@@ -18,4 +18,8 @@ router.route('/secret').get(passport.authenticate('jwt',{session:false}) ,UserCo
 //google Oauth route
 router.route('/google/oauth').post(passport.authenticate('gglToken',{session:false}),UserController.googleOauth);
 
+//google Oauth route
+router.route('/facebook/oauth').post(passport.authenticate('fbToken',{session:false}),UserController.facebookOauth);
+
+
 module.exports = router;

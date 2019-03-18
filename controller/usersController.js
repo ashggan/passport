@@ -50,5 +50,10 @@ module.exports =  {
     googleOauth :async (req,res,next)=>{
         const token = SignToken(req.user);
         res.status(200).json({token});
+    },
+    facebookOauth : async (req,res,next)=>{
+        const token = SignToken(req.user);
+        res.status(200).json({token});
     }
+    
 }

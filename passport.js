@@ -2,23 +2,47 @@ const passport = require('passport');
 const jwtStratedgy = require('passport-jwt').Strategy;
 const { ExtractJwt  } = require('passport-jwt') ;
 const LocalStrategy = require('passport-local').Strategy;
-const { token_secret }  = require('./configuration');
+const { token_secret , Oauth }  = require('./configuration');
 const GooglePlusTokenStrategy = require('passport-google-plus-token');
+const FacebookTokenStrategy = require('passport-facebook-token');
 const User = require('./models/users');
 
+// facebook auth stratedgy 
+passport.use('fbToken',new FacebookTokenStrategy({
+        clientID: Oauth.facebook.clientID ,
+        clientSecret : Oauth.facebook.clientSecret
+    },async (accessToken, refreshToken, profile, done)=>{
+       try {
 
+        // check if user exist
+        const foundUser = await User.findOne({'facebook.id': profile.id});
+        if(foundUser) return done(null,foundUser);
+
+        // create the new user
+        const gglUser = new User({
+            method: 'facebook',
+            facebook:{
+                id: profile.id,
+                email: profile.emails[0].value
+            }
+        });
+
+        // save the user 
+        await gglUser.save();
+        done(null,gglUser);
+
+       } catch (error) {
+           
+       }
+    }))
 
 // google auth stratedgy
 passport.use('gglToken',new GooglePlusTokenStrategy({
-    clientID: '543614810862-vabuaqcdac8dj414mhcerse4gsmk4fg0.apps.googleusercontent.com',
-    clientSecret:'WG2LuIBmKdgSmAw7_UgDAeCB'
+    clientID: Oauth.google.clientID ,
+    clientSecret: Oauth.google.clientSecret
     }
     ,async(accessToken, refreshToken, profile, done)=>{
         try {
-            // console.log('accessToken : ',accessToken);
-            // console.log('refreshToken :',refreshToken);
-            console.log('profile :',profile.id);
-
             // check if user exist
             const foundUser = await User.findOne({'google.id': profile.id});
             if(foundUser) return done(null,foundUser);
@@ -31,10 +55,7 @@ passport.use('gglToken',new GooglePlusTokenStrategy({
                     email: profile.emails[0].value
                 }
             });
-            
-            console.log('creating new user');
 
-            
             // save the user 
             await gglUser.save();
             done(null,gglUser);
@@ -43,7 +64,7 @@ passport.use('gglToken',new GooglePlusTokenStrategy({
             console.log(error);
             done(error,false);
         }
-    }))
+}))
 
 
 // json web token stratedgy
