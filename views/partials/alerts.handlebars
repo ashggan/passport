@@ -1,0 +1,35 @@
+{{#if register_success  }}
+<article class="message is-success">
+  <div class="message-header">
+    <p>Successfull registered </p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+      {{register_success}}
+   </div>
+</article>
+{{/if}}
+
+{{#if register  }}
+<article class="message is-success">
+  <div class="message-header">
+    <p>Successfull registered </p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+      {{ register }}
+   </div>
+</article>
+{{/if}}
+
+{{#if register_fail}}
+<article class="message is-success">
+  <div class="message-header">
+    <p>unsuccessfull registered </p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+      {{registeregister_failr_success}}
+  </div>
+</article>
+{{/if}}

@@ -1,0 +1,33 @@
+{
+  "name": "authentication_system",
+  "version": "1.0.0",
+  "description": "authentication system using JWT and passport",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "authentication_system"
+  },
+  "keywords": [
+    "jwt",
+    "passport",
+    "node",
+    "express",
+    "mongoDB"
+  ],
+  "author": "Ashgan Musatafa",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-promise-router": "^3.0.3",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.0",
+    "mongoose": "^5.4.19",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.10"
+  }
+}
