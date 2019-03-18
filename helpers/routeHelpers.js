@@ -18,6 +18,10 @@ module.exports = {
             email: joi.string().email().required(),
             name: joi.string().required(),
             password : joi.string().required()
+        }),
+        loginSchema : joi.object().keys({
+            email: joi.string().email().required(),
+            password : joi.string().required()
         })
     }
 }

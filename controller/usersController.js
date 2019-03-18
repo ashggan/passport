@@ -30,10 +30,14 @@ module.exports =  {
         res.status(200).json({token});
     },
     signIn: async (req,res,next)=>{
-        // registering the user email and password
+        // generate the token 
+        const token = SignToken(req.user);
+        res.status(200).json({token});
+        console.log('user',req.user);
        
     },
     secret: async (req,res,next)=>{
-        console.log('secret() is done')
+        console.log(' hi there');
+        res.json({'name':'maya dan'})
     },
 }
