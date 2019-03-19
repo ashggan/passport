@@ -16,11 +16,18 @@ module.exports =  {
         const {name ,email ,password} = req.value.body;
 
         // check email uniqueness
-        const fonudUser = await User.findOne({email:email}); 
+        const fonudUser = await User.findOne({'local.email':email}); 
         if(fonudUser)  return res.status(401).send({error:'email is already existed'}) ;
 
         // create the user
-        const newUser = new User({email,password,name});
+        const newUser = new User({
+            method: 'local',
+            local : {
+              email :email ,
+              password: password,
+              name:name  
+            }
+            });
         await newUser.save();
 
         // get the token
@@ -40,4 +47,8 @@ module.exports =  {
         console.log(' hi there');
         res.json({'name':'maya dan'})
     },
+    googleOauth :async (req,res,next)=>{
+        const token = SignToken(req.user);
+        res.status(200).json({token});
+    }
 }

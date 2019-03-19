@@ -15,4 +15,7 @@ router.route('/signIn').post(validateBody(schema.loginSchema),passport.authentic
 // jwt is authenticaing func belong to passport allow the serve to check the user validity
 router.route('/secret').get(passport.authenticate('jwt',{session:false}) ,UserController.secret);
 
+//google Oauth route
+router.route('/google/oauth').post(passport.authenticate('gglToken',{session:false}),UserController.googleOauth);
+
 module.exports = router;

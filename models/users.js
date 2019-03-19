@@ -3,34 +3,60 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
 const userSchema  = new Schema({
-    name:{
-        type: String,
-        required : true
+    method:{
+        type :String,
+        enum :['local','google','facebook'],
+        required:true
     },
-    email:{
-        type: String,
-        required : true
+    local:{
+        name:{
+            type: String,
+        },
+        email:{
+            type: String,
+            lowercase:true
+        },
+        password:{
+            type: String,
+        },
+        date:{
+            type: Date,
+            default : Date.now
+        }
     },
-    password:{
-        type: String,
-        required : true
+    google:{
+        id:{
+            type :String
+        },
+        email:{
+            type: String,
+            lowercase:true
+        },
     },
-    date:{
-        type: Date,
-        default : Date.now
-    }
+    facebook:{
+        id:{
+            type :String
+        },
+        email:{
+            type: String,
+            lowercase:true
+        },
+    },
+    
 });
 
-userSchema.pre('save',async function(next){
+userSchema.pre('save', async function(next){
     try{
+        //check if method is local
+        if(this.method != 'local')  next();
         // generate the salt
         const salt  = await bcrypt.genSalt(10);
 
         // generate hashed password (salt+hash)
-        const hashedPassword = await bcrypt.hash(this.password,salt);
+        const hashedPassword = await bcrypt.hash(this.local.password,salt);
 
         // asign the hased password to hased to be saved in database
-        this.password =hashedPassword;
+        this.local.password =hashedPassword;
         
         next();
     }catch(error){
@@ -40,7 +66,7 @@ userSchema.pre('save',async function(next){
 
 userSchema.methods.validatingPassword = async function(password) {
     try {
-        return await bcrypt.compare(password,this.password);
+        return await bcrypt.compare(password,this.local.password);
         
     } catch (error) {
         throw new Error(error)
