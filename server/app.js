@@ -1,10 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 // const exphbs  = require('express-handlebars');
 
 
 const app = express();
+app.use(cors());
 
 // get the database connection file
 require('./config/db');
@@ -28,7 +30,4 @@ app.use(bodyParser.json());
 //routes 
 app.use('/users', require('./routes/usersRouter'));
 
- 
-// starting the server 
-var port = process.env.port || 3000 ;
-app.listen(port,console.log('server running on port '+port));
+module.exports = app;
